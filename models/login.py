@@ -3,5 +3,6 @@ from typing import Optional
 
 
 class Login(BaseModel):
-    notepad: Optional[str] = None
+    username: Optional[str] = None
+    email: Optional[str] = None
     account_id: int = 0
