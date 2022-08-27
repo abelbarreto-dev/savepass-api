@@ -22,9 +22,9 @@ class Account(Database):
     mobile = CharField(max_length=SMALL_LENGTH, null=True)
 
 
-class Notes(Database):
+class Note(Database):
     id = AutoField(null=False)
-    note = TextField(null=True)
+    notepad = TextField(null=True)
     account_id = ForeignKeyField(model=Account, field=Account.id, null=False)
 
 
