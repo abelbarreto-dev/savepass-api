@@ -38,12 +38,6 @@ def get_indexes_tuple(word: tuple, item: int, many: int) -> tuple:
     return indexes
 
 
-def mix_equal_no_pair_length(str_word: str) -> str:
-    if get_len_half(str_word)['length'] % 2 == 0:
-        return str_word
-    return f'ŧ{str_word}'
-
-
 class Encrypt:
 
     @classmethod
@@ -52,7 +46,6 @@ class Encrypt:
             return ''
         word = f'{word[0]}{passwd}{word[1:]}'
         passwd = None
-        word = mix_equal_no_pair_length(str_word=word)
         word = mix_half_str(str_word=word)
         word = str_to_generate(str_word=word)
         word = cls._encrypt_maker(word_codes=word)
@@ -70,12 +63,10 @@ class Encrypt:
             if not spc:
                 continue
             for i in spc:
-                if wd_encrypted[i] in (32, 161):
+                if wd_encrypted[i] in (32, 160):
                     wd_encrypted = wd_encrypted[:i] + [169] + wd_encrypted[i:]
                 elif wd_encrypted[i] == 126:
                     wd_encrypted = wd_encrypted[:i] + [174] + wd_encrypted[i:]
-        if wd_encrypted.__len__() % 2 != 0:
-            wd_encrypted += [ord('ŧ')]
         index = 0
         length = wd_encrypted.__len__()
         while True:
