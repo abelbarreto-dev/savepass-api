@@ -41,7 +41,7 @@ def get_indexes_tuple(word: tuple, item: int, many: int) -> tuple:
 def mix_equal_no_pair_length(str_word: str) -> str:
     if get_len_half(str_word)['length'] % 2 == 0:
         return str_word
-    return f'={str_word}'
+    return f'ŧ{str_word}'
 
 
 class Encrypt:
@@ -75,7 +75,7 @@ class Encrypt:
                 elif wd_encrypted[i] == 126:
                     wd_encrypted = wd_encrypted[:i] + [174] + wd_encrypted[i:]
         if wd_encrypted.__len__() % 2 != 0:
-            wd_encrypted += [ord('=')]
+            wd_encrypted += [ord('ŧ')]
         index = 0
         length = wd_encrypted.__len__()
         while True:
@@ -85,7 +85,7 @@ class Encrypt:
                 else:
                     wd_encrypted[index+1] -= 1
                 index += 1
-            elif wd_encrypted[index] % 2 == 0:
+            elif index % 2 == 0:
                 wd_encrypted[index] += 2
             else:
                 wd_encrypted[index] += 1
