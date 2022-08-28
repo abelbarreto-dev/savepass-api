@@ -1,11 +1,7 @@
 from typing import Generator
 
 
-def get_word_out_pass(word: str, passwd: str) -> str:
-    if word[0] == 'ŧ':
-        word = word[1:]
-    if word[-1] == 'ŧ':
-        word = word[:-1]
+def get_decrypted_word(word: str, passwd: str) -> str:
     start = word.index(passwd)
     length = passwd.__len__() + start
     pass_check = word[start: length]
@@ -41,15 +37,15 @@ class Decrypt:
     def decrypt_word(cls, word: str, passwd: str) -> str:
         word = word[2:]
         word = str_to_generate(str_word=word)
-        word = cls.decrypt_maker(word_codes=word)
+        word = cls._decrypt_maker(word_codes=word)
         word = get_out_special(word=word)
         word = ''.join(chr(i) for i in word)
         word = mix_half_str(str_word=word)
-        word = get_word_out_pass(word=word, passwd=passwd)
+        word = get_decrypted_word(word=word, passwd=passwd)
         return word
 
     @classmethod
-    def decrypt_maker(cls, word_codes: Generator) -> Generator:
+    def _decrypt_maker(cls, word_codes: Generator) -> Generator:
         wd_decrypted = [i for i in word_codes]
         length = wd_decrypted.__len__()
         index = 0
@@ -66,5 +62,5 @@ class Decrypt:
                 wd_decrypted[index] -= 1
             index += 1
             if index == length:
-            break
+                break
         return get_out_special(word=(i for i in wd_decrypted))
