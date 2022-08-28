@@ -2,6 +2,7 @@ from peewee import (
     AutoField, Model, TextField,
     CharField, ForeignKeyField
 )
+from controller.persist.database import Database as MySQL
 
 
 MAX_LENGTH, MID_LENGTH, SMALL_LENGTH = 255, 150, 100
@@ -11,7 +12,7 @@ MAX_LENGTH, MID_LENGTH, SMALL_LENGTH = 255, 150, 100
 
 class Database(Model):
     class Meta:
-        database = None
+        database = MySQL.open()
 
 
 class Account(Database):
