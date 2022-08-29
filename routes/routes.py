@@ -7,7 +7,7 @@ all_routes = {
     'login': {
         'new': '/login/new',
         'get_id': '/login/{id}',
-        'get_all': '/login/all',
+        'get_all': '/login/all/{id}',
         'search': '/login/search',
         'update': '/login/update',
         'delete': '/login/delete/{id}'
@@ -15,7 +15,7 @@ all_routes = {
     'loginnote': {
         'new': '/loginnote/new',
         'get_id': '/loginnote/{id}',
-        'get_all': '/loginnote/all',
+        'get_all': '/loginnote/all/{id}',
         'search': '/loginnote/search',
         'update': '/loginnote/update',
         'delete': '/loginnote/delete/{id}'
@@ -23,7 +23,7 @@ all_routes = {
     'note': {
         'new': '/note/new',
         'get_id': '/note/{id}',
-        'get_all': '/note/all',
+        'get_all': '/note/all/{id}',
         'search': '/note/search',
         'update': '/note/update',
         'delete': '/note/delete/{id}'
@@ -31,7 +31,7 @@ all_routes = {
     'password': {
         'new': '/password/new',
         'get_id': '/password/{id}',
-        'get_all': '/password/all',
+        'get_all': '/password/all/{id}',
         'search': '/password/search',
         'update': '/password/update',
         'delete': '/password/delete/{id}'
