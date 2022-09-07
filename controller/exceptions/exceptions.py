@@ -44,3 +44,11 @@ class PasswordNotFound(ValueError):
 
 class LoginNoteNotFound(ValueError):
     pass
+
+
+class ResourceValidateError(ValueError):
+    pass
+
+
+class IDError(TypeError):
+    pass
