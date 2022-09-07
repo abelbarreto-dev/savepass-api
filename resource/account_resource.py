@@ -16,7 +16,7 @@ from controller.exceptions.exceptions import (
 
 class AccountResource:
 
-    PASSWORD = 'pa1]lD-]v71Sa#Z*%VfB)]W-ze_3sYa!Fj2V1-7Z(hL}{$heCi&ZfXsVp/k1$[oU+$4'
+    PASSWORD: str = 'password'
 
     def __init__(self):
         self._encrypt = Encrypt()
@@ -32,11 +32,10 @@ class AccountResource:
 
     async def create_account(self, account: Account) -> json:
         try:
+            self._checker_data_username(username=account.username)
+            self._checker_data_email(email=account.email)
+            self._checker_data_password(password=account.passwd)
             self._checker_data_mobile(mobile=account.mobile)
-            self._checker_data_email(email=account.mobile)
-            self._checker_get_login(
-                username=account.username, password=account.passwd
-            )
         except (
             UsernameError, PasswordError, MobileError,
             MobileDataType, EmailError
@@ -74,7 +73,7 @@ class AccountResource:
         if not isinstance(username, str):
             raise UsernameError('username must be string.')
         elif not isinstance(password, str):
-            raise PasswordError('password mut be string.')
+            raise PasswordError('password must be string.')
         elif not username_checker(username=username) and not email_checker(email=username):
             raise UsernameError('username is invalid.')
         elif not password_checker(password=password):
@@ -91,6 +90,18 @@ class AccountResource:
             raise EmailError('e-mail type invalid.')
         if not email_checker(email=email):
             raise EmailError('e-mail is invalid.')
+
+    def _checker_data_username(self, username: str) -> None:
+        if not isinstance(username, str):
+            raise UsernameError('username type must be string.')
+        if not username_checker(username=username):
+            raise UsernameError('username is invalid.')
+
+    def _checker_data_password(self, password: str) -> None:
+        if not isinstance(password, str):
+            raise PasswordError('password type must be string.')
+        if not password_checker(password=password):
+            raise PasswordError('password is invalid.')
 
     def _checker_delete(self, id: int = 0) -> None:
         if not isinstance(id, int):
