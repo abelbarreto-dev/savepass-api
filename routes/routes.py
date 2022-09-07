@@ -1,8 +1,9 @@
 all_routes = {
     'account': {
         'new': '/account/new',
-        'update': '/account/update',
-        'delete': '/account/delete/{id}'
+        'update': '/account/update/{username}/{password}/mobile/{mobile}',
+        'delete': '/account/delete/{id}',
+        'login': '/account/login/{username}/{password}',
     },
     'login': {
         'new': '/login/new',
