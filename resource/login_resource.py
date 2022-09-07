@@ -1,5 +1,11 @@
 import json
 from models.login import Login
+from controller.tools.checker import (
+    username_checker, email_checker, tag_checker
+)
+from controller.exceptions.exceptions import (
+    UsernameError, EmailError, TagError, IDError
+)
 
 
 class LoginResource:
