@@ -48,3 +48,7 @@ class LoginNoteNotFound(ValueError):
 
 class ResourceValidateError(ValueError):
     pass
+
+
+class IDError(TypeError):
+    pass
