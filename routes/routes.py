@@ -34,7 +34,7 @@ all_routes = {
         'get_id': '/password/{id}',
         'get_all': '/password/all/{id}',
         'search': '/password/search',
-        'update': '/password/update',
+        'update': '/password/update/{id}',
         'delete': '/password/delete/{id}'
     }
 }

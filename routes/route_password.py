@@ -31,8 +31,8 @@ async def get_search_password(**kwargs) -> json:
 
 
 @route_password.put(pass_routes['update'])
-async def put_password(password: Password) -> json:
-    return await pass_resource.update_password(password=password)
+async def put_password(password: Password, id: int = 0) -> json:
+    return await pass_resource.update_password(password=password, id=id)
 
 
 @route_password.delete(pass_routes['delete'])
