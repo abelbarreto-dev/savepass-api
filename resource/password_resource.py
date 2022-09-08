@@ -24,22 +24,42 @@ class PasswordResource:
         return self._decrypt
 
     async def create_password(self, password: Password) -> json:
-        pass
+        try:
+            self._checker_id(id=password.login_id, name='login_id')
+            self._checker_data_password(password=password.password_1)
+        except (IDError, PasswordError) as exc:
+            pass
 
     async def get_password_by_id(self, id: int = 0) -> json:
-        pass
+        try:
+            self._checker_id(id=id)
+        except IDError as exc:
+            pass
 
     async def get_passwords_all(self, id: int = 0) -> json:
-        pass
+        try:
+            self._checker_id(id=id, name='login_id')
+        except IDError as exc:
+            pass
 
     async def get_password_search(self, **kwargs) -> json:
-        pass
+        for key in kwargs.keys():
+            kwargs[key] = self._encrypter(kwargs[key])
+        login_decrypted = self._decrypter()
 
-    async def update_password(self, password: Password) -> json:
-        pass
+    async def update_password(self, password: Password, id: int = 0) -> json:
+        try:
+            self._checker_id(id=id)
+            self._checker_id(id=password.login_id, name='login_id')
+            self._checker_data_password(password=password.password_1)
+        except (IDError, PasswordError) as exc:
+            pass
 
     async def delete_password(self, id: int = 0) -> json:
-        pass
+        try:
+            self._checker_id(id=id)
+        except IDError as exc:
+            pass
 
     # utils methods
 
