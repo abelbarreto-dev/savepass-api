@@ -1,4 +1,5 @@
 import json
+from typing import Generator
 from models.password import Password
 from crypter.encrypter import Encrypt
 from crypter.decrypter import Decrypt
@@ -53,3 +54,15 @@ class PasswordResource:
             raise IDError(f'{name} type must be string.')
         if not id < 1:
             raise IDError(f'{name} must be positive.')
+
+    def _encrypter(self, *args) -> Generator:
+        return (
+            self.encrypt.encrypt_word(word=word, passwd=self.PASSWORD)
+            for word in args
+        )
+
+    def _decrypter(self, *args) -> Generator:
+        return (
+            self.decrypt.decrypt_word(word=word, passwd=self.PASSWORD)
+            for word in args
+        )
