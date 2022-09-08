@@ -49,7 +49,9 @@ class LoginResource:
             pass
 
     async def get_login_search(self, **kwargs) -> json:
-        pass
+        for key in kwargs.keys():
+            kwargs[key] = self._encrypter(kwargs[key])
+        login_decrypted = self._decrypter()
 
     async def update_login(self, login: Login, id: int = 0) -> json:
         try:
