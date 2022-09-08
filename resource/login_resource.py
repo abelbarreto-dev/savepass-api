@@ -11,24 +11,54 @@ from controller.exceptions.exceptions import (
 class LoginResource:
 
     async def create_login(self, login: Login) -> json:
-        pass
+        try:
+            self._checks_create_and_update(login=login)
+            self._checker_id(id=login.account_id, name='account_id')
+        except (
+            UsernameError, EmailError, TagError, IDError
+        ) as exc:
+            pass
 
     async def get_login_by_id(self, id: int = 0) -> json:
-        pass
+        try:
+            self._checker_id(id=id)
+        except IDError as exc:
+            pass
 
     async def get_logins_all(self, id: int = 0) -> json:
-        pass
+        try:
+            self._checker_id(id=id, name='account_id')
+        except IDError as exc:
+            pass
 
     async def get_login_search(self, **kwargs) -> json:
         pass
 
-    async def update_login(self, login: Login) -> json:
-        pass
+    async def update_login(self, login: Login, id: int = 0) -> json:
+        try:
+            self._checker_id(id=login.account_id, name='account_id')
+            self._checker_id(id=id)
+            self._checks_create_and_update(login=login)
+        except (
+            IDError, UsernameError, EmailError, TagError
+        ) as exc:
+            pass
 
     async def delete_login(self, id: int = 0) -> json:
-        pass
+        try:
+            self._checker_id(id=id)
+        except IDError as exc:
+            pass
 
     # utils methods
+
+    def _checks_create_and_update(self, login: Login) -> None:
+        if login.username is not None:
+            self._checker_username(username=login.username)
+        elif login.email is not None:
+            self._checker_email(email=login.email)
+        elif login.tag is not None:
+            self._checker_tag(tag=login.tag)
 
     def _checker_username(self, username: str) -> None:
         if not isinstance(username, str):
@@ -48,8 +78,8 @@ class LoginResource:
         if not tag_checker(tag=tag):
             raise TagError('tag is invalid.')
 
-    def _checker_account_id(self, account_id: int) -> None:
-        if not isinstance(account_id, str):
-            raise IDError('account_id type must be string.')
-        if not account_id < 1:
-            raise IDError('account_id must be positive.')
+    def _checker_id(self, id: int, name: str = 'id') -> None:
+        if not isinstance(id, int):
+            raise IDError(f'{name} type must be string.')
+        if not id < 1:
+            raise IDError(f'{name} must be positive.')
