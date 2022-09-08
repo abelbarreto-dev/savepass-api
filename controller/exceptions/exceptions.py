@@ -52,3 +52,7 @@ class ResourceValidateError(ValueError):
 
 class IDError(TypeError):
     pass
+
+
+class TagError(ValueError):
+    pass

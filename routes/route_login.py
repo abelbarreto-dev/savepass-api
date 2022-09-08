@@ -31,7 +31,7 @@ async def get_search_login(**kwargs) -> json:
 
 
 @route_login.put(log_routes['update'])
-async def put_login(login: Login) -> json:
+async def put_login(login: Login, id: int = 0) -> json:
     return await log_resource.update_login(login=login)
 
 

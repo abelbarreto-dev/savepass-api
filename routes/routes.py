@@ -10,7 +10,7 @@ all_routes = {
         'get_id': '/login/{id}',
         'get_all': '/login/all/{id}',
         'search': '/login/search',
-        'update': '/login/update',
+        'update': '/login/update/{id}',
         'delete': '/login/delete/{id}'
     },
     'loginnote': {
