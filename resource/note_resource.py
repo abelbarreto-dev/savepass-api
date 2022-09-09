@@ -23,13 +23,24 @@ class NoteResource:
         return self._decrypt
 
     async def create_note(self, note: Note) -> json:
-        pass
+        try:
+            self._checker_id(id=loginnote.login_id, name='account_id')
+            self._checker_note(note_pad=note.notepad)
+        except (NoteError, IDError) as exc:
+            pass
+        notepad_encrypted = self._encrypter(note.notepad)
 
     async def get_note_by_id(self, id: int = 0) -> json:
-        pass
+        try:
+            self._checker_id(id=id)
+        except IDError as ecv:
+            pass
 
     async def get_notes_all(self, id: int = 0) -> json:
-        pass
+        try:
+            self._checker_id(id=id, name='account_id')
+        except IDError as ecv:
+            pass
 
     async def get_notes_search(self, **kwargs) -> json:
         for key in kwargs.keys():
@@ -37,10 +48,19 @@ class NoteResource:
         login_decrypted = self._decrypter()
 
     async def update_note(self, note: Note, id: int = 0) -> json:
-        pass
+        try:
+            self._checker_id(id=id)
+            self._checker_id(id=loginnote.login_id, name='account_id')
+            self._checker_note(note_pad=note.notepad)
+        except (NoteError, IDError) as exc:
+            pass
+        notepad_encrypted = self._encrypter(note.notepad)
 
     async def delete_note(self, id: int = 0) -> json:
-        pass
+        try:
+            self._checker_id(id=id)
+        except IDError as ecv:
+            pass
 
     # utils methods
 
