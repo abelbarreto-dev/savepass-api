@@ -1,8 +1,6 @@
 import json
-from typing import Generator
 from models.account import Account
-from crypter.encrypter import Encrypt
-from crypter.decrypter import Decrypt
+from controller.tools.datasec import DataSec
 from controller.tools.checker import (
     username_checker, password_checker,
     email_checker, mobile_checker,
@@ -16,19 +14,12 @@ from controller.exceptions.exceptions import (
 
 class AccountResource:
 
-    PASSWORD: str = 'password'
-
     def __init__(self):
-        self._encrypt = Encrypt()
-        self._decrypt = Decrypt()
+        self._datasec_ = DataSec()
 
     @property
-    def encrypt(self) -> Encrypt:
-        return self._encrypt
-
-    @property
-    def decrypt(self) -> Decrypt:
-        return self._decrypt
+    def _datasec(self) -> DataSec:
+        return self._datasec_
 
     async def create_account(self, account: Account) -> json:
         try:
@@ -41,7 +32,7 @@ class AccountResource:
             MobileDataType, EmailError
         ) as exc:
             pass
-        data_encrypted = self._encrypter(
+        data_encrypted = self._datasec.encrypter(
             account.username, account.email, account.passwd, account.mobile
         )
 
@@ -50,8 +41,8 @@ class AccountResource:
             self._checker_get_login(username=username, password=password)
         except (UsernameError, PasswordError) as exc:
             pass
-        data_encrypted = self._encrypter(username, password)
-        data_decrypted = self._decrypter()
+        data_encrypted = self._datasec.encrypter(username, password)
+        data_decrypted = self._datasec.decrypter()
 
     async def update_account(self, username: str, password: str, mobile: str) -> json:
         try:
@@ -59,7 +50,7 @@ class AccountResource:
             self._checker_data_mobile(mobile=mobile)
         except (UsernameError, PasswordError, MobileError, MobileDataType) as exc:
             pass
-        data_encrypted = self._encrypter(username, password, mobile)
+        data_encrypted = self._datasec.encrypter(username, password, mobile)
 
     async def delete_account(self, id: int = 0) -> json:
         try:
@@ -108,15 +99,3 @@ class AccountResource:
             raise IDError('id type invalid.')
         elif id < 1:
             raise IDError('id must be a positive number.')
-
-    def _encrypter(self, *args) -> Generator:
-        return (
-            self.encrypt.encrypt_word(word=word, passwd=self.PASSWORD)
-            for word in args
-        )
-
-    def _decrypter(self, *args) -> Generator:
-        return (
-            self.decrypt.decrypt_word(word=word, passwd=self.PASSWORD)
-            for word in args
-        )
