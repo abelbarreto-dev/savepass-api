@@ -31,8 +31,8 @@ async def get_search_login_note(**kwargs) -> json:
 
 
 @route_loginnote.put(loginnote_routes['update'])
-async def put_login_note(loginnote: LoginNote) -> json:
-    return await login_note_resource.udpate_login_note(loginnote=loginnote)
+async def put_login_note(loginnote: LoginNote, id: int = 0) -> json:
+    return await login_note_resource.udpate_login_note(loginnote=loginnote, id=id)
 
 
 @route_loginnote.delete(loginnote_routes['delete'])
