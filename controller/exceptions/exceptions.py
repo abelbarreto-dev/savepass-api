@@ -56,3 +56,7 @@ class IDError(TypeError):
 
 class TagError(ValueError):
     pass
+
+
+class LoginNoteError(TypeError):
+    pass
