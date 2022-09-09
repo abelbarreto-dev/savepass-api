@@ -1,8 +1,6 @@
 import json
-from typing import Generator
 from models.login import Login
-from crypter.encrypter import Encrypt
-from crypter.decrypter import Decrypt
+from controller.tools.datasec import DataSec
 from controller.tools.checker import (
     username_checker, email_checker, tag_checker
 )
@@ -13,19 +11,12 @@ from controller.exceptions.exceptions import (
 
 class LoginResource:
 
-    PASSWORD: str = 'password'
-
     def __init__(self):
-        self._encrypt = Encrypt()
-        self._decrypt = Decrypt()
+        self._datasec_ = DataSec()
 
     @property
-    def encrypt(self) -> Encrypt:
-        return self._encrypt
-
-    @property
-    def decrypt(self) -> Decrypt:
-        return self._decrypt
+    def _datasec(self) -> DataSec:
+        return self._datasec_
 
     async def create_login(self, login: Login) -> json:
         try:
@@ -35,6 +26,9 @@ class LoginResource:
             UsernameError, EmailError, TagError, IDError
         ) as exc:
             pass
+        login_encrypt = self._datasec.encrypter(
+            login.username, login.email, login.tag
+        )
 
     async def get_login_by_id(self, id: int = 0) -> json:
         try:
@@ -50,8 +44,8 @@ class LoginResource:
 
     async def get_login_search(self, **kwargs) -> json:
         for key in kwargs.keys():
-            kwargs[key] = self._encrypter(kwargs[key])
-        login_decrypted = self._decrypter()
+            kwargs[key] = self._datasec.encrypter(kwargs[key])
+        login_decrypted = self._datasec.decrypter()
 
     async def update_login(self, login: Login, id: int = 0) -> json:
         try:
@@ -62,6 +56,9 @@ class LoginResource:
             IDError, UsernameError, EmailError, TagError
         ) as exc:
             pass
+        login_encrypt = self._datasec.encrypter(
+            login.username, login.email, login.tag
+        )
 
     async def delete_login(self, id: int = 0) -> json:
         try:
@@ -102,15 +99,3 @@ class LoginResource:
             raise IDError(f'{name} type must be string.')
         if not id < 1:
             raise IDError(f'{name} must be positive.')
-
-    def _encrypter(self, *args) -> Generator:
-        return (
-            self.encrypt.encrypt_word(word=word, passwd=self.PASSWORD)
-            for word in args
-        )
-
-    def _decrypter(self, *args) -> Generator:
-        return (
-            self.decrypt.decrypt_word(word=word, passwd=self.PASSWORD)
-            for word in args
-        )

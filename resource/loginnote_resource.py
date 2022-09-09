@@ -1,26 +1,17 @@
 import json
-from typing import Generator
+from controller.tools.datasec import DataSec
 from models.loginnote import LoginNote
-from crypter.encrypter import Encrypt
-from crypter.decrypter import Decrypt
 from controller.exceptions.exceptions import IDError, LoginNoteError
 
 
 class LoginNoteResource:
 
-    PASSWORD = 'password'
-
     def __init__(self):
-        self._encrypt = Encrypt()
-        self._decrypt = Decrypt()
+        self._datasec_ = DataSec()
 
     @property
-    def encrypt(self) -> Encrypt:
-        return self._encrypt
-
-    @property
-    def decrypt(self) -> Decrypt:
-        return self._decrypt
+    def _datasec(self) -> DataSec:
+        return self._datasec_
 
     async def create_login_note(self, loginote: LoginNote) -> json:
         try:
@@ -28,7 +19,7 @@ class LoginNoteResource:
             self._checker_login_note(login_note=loginnote.notepad)
         except (LoginNoteError, IDError) as exc:
             pass
-        notepad_encrypted = self._encrypter(loginnote.notepad)
+        notepad_encrypted = self._datasec.encrypter(loginnote.notepad)
 
     async def get_login_note_by_id(self, id: int = 0) -> json:
         try:
@@ -44,8 +35,8 @@ class LoginNoteResource:
 
     async def get_login_note_search(self, **kwargs) -> json:
         for key in kwargs.keys():
-            kwargs[key] = self._encrypter(kwargs[key])
-        login_decrypted = self._decrypter()
+            kwargs[key] = self._datasec.encrypter(kwargs[key])
+        login_decrypted = self._datasec.decrypter()
 
     async def udpate_login_note(self, loginnote: LoginNote, id: int = 0) -> json:
         try:
@@ -54,7 +45,7 @@ class LoginNoteResource:
             self._checker_login_note(login_note=loginnote.notepad)
         except (LoginNoteError, IDError) as exc:
             pass
-        notepad_encrypted = self._encrypter(loginnote.notepad)
+        notepad_encrypted = self._datasec.encrypter(loginnote.notepad)
 
     async def delete_login_note(self, id: int = 0) -> json:
         try:
@@ -77,15 +68,3 @@ class LoginNoteResource:
             raise IDError(f'{name} type must be string.')
         if not id < 1:
             raise IDError(f'{name} must be positive.')
-
-    def _encrypter(self, *args) -> Generator:
-        return (
-            self.encrypt.encrypt_word(word=word, passwd=self.PASSWORD)
-            for word in args
-        )
-
-    def _decrypter(self, *args) -> Generator:
-        return (
-            self.decrypt.decrypt_word(word=word, passwd=self.PASSWORD)
-            for word in args
-        )
