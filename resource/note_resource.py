@@ -32,7 +32,9 @@ class NoteResource:
         pass
 
     async def get_notes_search(self, **kwargs) -> json:
-        pass
+        for key in kwargs.keys():
+            kwargs[key] = self._encrypter(kwargs[key])
+        login_decrypted = self._decrypter()
 
     async def update_note(self, note: Note, id: int = 0) -> json:
         pass
@@ -42,13 +44,13 @@ class NoteResource:
 
     # utils methods
 
-    def _checker_login_note(self, login_note: str) -> None:
-        if login_note is None:
+    def _checker_note(self, note_pad: str) -> None:
+        if note_pad is None:
             return None
-        if not isinstance(login_note, str):
-            raise LoginNoteError('login_note must be string.')
-        if len(login_note) < 1:
-            raise LoginNoteError('login_note invalid: empty string.')
+        if not isinstance(note_pad, str):
+            raise NoteError('notepad must be string.')
+        if len(note_pad) < 1:
+            raise NoteError('notepad invalid: empty string.')
 
     def _checker_id(self, id: int, name: str = 'id') -> None:
         if not isinstance(id, int):
