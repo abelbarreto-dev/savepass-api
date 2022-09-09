@@ -26,7 +26,7 @@ all_routes = {
         'get_id': '/note/{id}',
         'get_all': '/note/all/{id}',
         'search': '/note/search',
-        'update': '/note/update',
+        'update': '/note/update/{id}',
         'delete': '/note/delete/{id}'
     },
     'password': {

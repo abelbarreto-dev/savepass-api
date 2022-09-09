@@ -60,3 +60,7 @@ class TagError(ValueError):
 
 class LoginNoteError(TypeError):
     pass
+
+
+class NoteError(TypeError):
+    pass

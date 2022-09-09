@@ -16,7 +16,7 @@ class NoteResource:
     async def get_notes_search(self, **kwargs) -> json:
         pass
 
-    async def update_note(self, note: Note) -> json:
+    async def update_note(self, note: Note, id = int = 0) -> json:
         pass
 
     async def delete_note(self, id: int = 0) -> json:
