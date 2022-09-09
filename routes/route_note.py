@@ -31,7 +31,7 @@ async def get_search_notes(**kwargs) -> json:
 
 
 @route_note.put(note_routes['update'])
-async def put_note(note: Note) -> json:
+async def put_note(note: Note, id: int = 0) -> json:
     return await note_resource.update_note(note=note)
 
 
